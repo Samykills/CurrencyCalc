@@ -137,6 +137,9 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-exception-handler')
+    compile project(':react-native-vector-icons')
+    compile project(':react-native-config')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     implementation "com.facebook.react:react-native:+"  // From node_modules
@@ -148,3 +151,4 @@ task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
 }
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"

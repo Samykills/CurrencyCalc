@@ -4,11 +4,24 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "jest",
+    "debug-android-dev": "ENVFILE=environments/.env.dev react-native run-android",
+    "debug-android-pre-prod": "ENVFILE=environments/.env.preProd react-native run-android",
+    "debug-android-staging": "ENVFILE=environments/.env.staging react-native run-android",
+    "debug-android-prod": "ENVFILE=environments/.env.prod react-native run-android",
+    "release-android-pre-prod": "export ENVFILE=environments/.env.preProd && cd android && ./gradlew clean &&./gradlew assembleRelease && cd ..",
+    "release-android-prod": "export ENVFILE=environments/.env.prod && cd android && ./gradlew clean &&./gradlew assembleRelease && cd .."
   },
   "dependencies": {
+    "native-base": "2.8.2",
     "react": "16.6.3",
-    "react-native": "0.57.8"
+    "react-native": "0.57.8",
+    "react-native-config": "0.11.7",
+    "react-native-router-flux": "4.0.6",
+    "react-native-vector-icons": "6.1.0",
+    "react-native-exception-handler": "2.10.2",
+    "uRnFramework-app-core": "git+https://ullas_gupta@bitbucket.org/ugaj/urnframework-app-core.git",
+    "uRnFramework-basic-components": "git+https://ullas_gupta@bitbucket.org/ugaj/uRnFramework-basic-components.git"
   },
   "devDependencies": {
     "babel-jest": "23.6.0",
