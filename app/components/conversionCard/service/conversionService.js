@@ -4,7 +4,7 @@ const httpClient = new HttpClient(Config.BASE_TAXFIX_URL, {}, 10000);
 class ConversionService {
   static getRates() {
     let url = "/rates";
-    return httpClient.getApi();
+    return httpClient.getApi(url);
   }
 }
 

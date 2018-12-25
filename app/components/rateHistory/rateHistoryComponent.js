@@ -1,9 +1,10 @@
 import React from "react";
 import { Card, CardItem, Item, Right, Left, Body } from "native-base";
-import { View, Text } from "react-native";
+import { View, Text, Animated } from "react-native";
 import { height, width, totalSize } from "react-native-dimension";
 import PureChart from "react-native-pure-chart";
 import { DefaultAppTheme } from "uRnFramework-basic-components";
+import RateHistoryServiceManager from "./serviceManager/rateHistoryServiceManager";
 const sampleData = [
   { x: "2018-01-01", y: 30 },
   { x: "2018-01-02", y: 200 },
@@ -14,7 +15,22 @@ const sampleData = [
 class RateHistoryComponent extends React.PureComponent {
   constructor(props) {
     super(props);
+    this.state = {
+      graphData: sampleData,
+    };
   }
+
+  componentDidMount() {
+    RateHistoryServiceManager.getRateHistory("USD", "INR").then(
+      res => {
+        this.setState({ graphData: res });
+      },
+      err => {
+        debugger;
+      }
+    );
+  }
+
   render() {
     return (
       <Card>
@@ -46,8 +62,8 @@ class RateHistoryComponent extends React.PureComponent {
         </CardItem>
         <CardItem style={{ width: width(80) }}>
           <PureChart
-            numberOfYAxisGuideLine={8}
-            data={sampleData}
+            numberOfYAxisGuideLine={5}
+            data={this.state.graphData}
             color={DefaultAppTheme.primary}
             type="line"
           />

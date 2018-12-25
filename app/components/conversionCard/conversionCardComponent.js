@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, Animated } from "react-native";
 import {
   Card,
   CardItem,
@@ -27,7 +27,10 @@ class ConversionCardComponent extends React.PureComponent {
       fromCurrency: "",
       fromCurrencyValue: "1",
       toCurrency: "",
-      toCurrencyValue: "1"
+      toCurrencyValue: "1",
+
+      cardContentBounceValue1: new Animated.Value(-width(20)),
+      cardContentBounceValue2: new Animated.Value(-width(50))
     };
   }
 
@@ -67,72 +70,100 @@ class ConversionCardComponent extends React.PureComponent {
       fromCurrency: currencySelectionDataArray[0],
       toCurrency: currencySelectionDataArray[1]
     });
+    Animated.parallel([
+      Animated.spring(this.state.cardContentBounceValue1, {
+        toValue: 0,
+        velocity: 3,
+        tension: 2,
+        friction: 8,
+        useNativeDriver: true
+      }),
+      Animated.spring(this.state.cardContentBounceValue2, {
+        toValue: 0,
+        velocity: 3,
+        tension: 2,
+        friction: 8,
+        useNativeDriver: true
+      })
+    ]).start();
   }
 
   _renderConversionCard() {
     return (
       <View>
-        <CardItem>
-          <Left>
-            <Item rounded>
-              <Input
-                placeholder="value"
-                keyboardType="numeric"
-                value={`${this.state.fromCurrencyValue}`}
-                onChangeText={text => {
-                  this.setState({
-                    fromCurrencyValue: text,
-                    toCurrencyValue: 16
-                  });
-                }}
-              />
-            </Item>
-          </Left>
-          <Right>
-            <Item>
-              <Picker
-                mode="dropdown"
-                iosIcon={<Icon name="ios-arrow-down" />}
-                style={{ width: undefined }}
-                selectedValue={this.state.fromCurrency}
-                onValueChange={this.onFromCurrencyChange.bind(this)}
-              >
-                {this.state.currencySelection.map(item => {
-                  return <Picker.Item label={item} value={item} key={item} />;
-                })}
-              </Picker>
-            </Item>
-          </Right>
-        </CardItem>
-        <CardItem>
-          <Left>
-            <Item rounded>
-              <Input
-                placeholder="value"
-                keyboardType="numeric"
-                value={`${this.state.toCurrencyValue}`}
-                onChangeText={text => {
-                  this.setState({ toCurrencyValue: text });
-                }}
-              />
-            </Item>
-          </Left>
-          <Right>
-            <Item>
-              <Picker
-                mode="dropdown"
-                iosIcon={<Icon name="ios-arrow-down" />}
-                style={{ width: undefined }}
-                selectedValue={this.state.toCurrency}
-                onValueChange={this.onToCurrencyChange.bind(this)}
-              >
-                {this.state.currencySelection.map(item => {
-                  return <Picker.Item label={item} value={item} key={item} />;
-                })}
-              </Picker>
-            </Item>
-          </Right>
-        </CardItem>
+        <Animated.View
+          style={{
+            transform: [{ translateY: this.state.cardContentBounceValue1 }]
+          }}
+        >
+          <CardItem>
+            <Left>
+              <Item rounded>
+                <Input
+                  placeholder="value"
+                  keyboardType="numeric"
+                  value={`${this.state.fromCurrencyValue}`}
+                  onChangeText={text => {
+                    this.setState({
+                      fromCurrencyValue: text,
+                      toCurrencyValue: 16
+                    });
+                  }}
+                />
+              </Item>
+            </Left>
+            <Right>
+              <Item>
+                <Picker
+                  mode="dropdown"
+                  iosIcon={<Icon name="ios-arrow-down" />}
+                  style={{ width: undefined }}
+                  selectedValue={this.state.fromCurrency}
+                  onValueChange={this.onFromCurrencyChange.bind(this)}
+                >
+                  {this.state.currencySelection.map(item => {
+                    return <Picker.Item label={item} value={item} key={item} />;
+                  })}
+                </Picker>
+              </Item>
+            </Right>
+          </CardItem>
+        </Animated.View>
+        <Animated.View
+          style={{
+            transform: [{ translateY: this.state.cardContentBounceValue2 }]
+          }}
+        >
+          <CardItem>
+            <Left>
+              <Item rounded>
+                <Input
+                  placeholder="value"
+                  keyboardType="numeric"
+                  value={`${this.state.toCurrencyValue}`}
+                  onChangeText={text => {
+                    this.setState({ toCurrencyValue: text });
+                  }}
+                />
+              </Item>
+            </Left>
+            <Right>
+              <Item>
+                <Picker
+                  mode="dropdown"
+                  iosIcon={<Icon name="ios-arrow-down" />}
+                  style={{ width: undefined }}
+                  selectedValue={this.state.toCurrency}
+                  onValueChange={this.onToCurrencyChange.bind(this)}
+                >
+                  {this.state.currencySelection.map(item => {
+                    return <Picker.Item label={item} value={item} key={item} />;
+                  })}
+                </Picker>
+              </Item>
+            </Right>
+          </CardItem>
+        </Animated.View>
       </View>
     );
   }

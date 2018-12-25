@@ -5,7 +5,8 @@ import {
   Image,
   ImageBackground,
   FlatList,
-  Alert
+  Alert,
+  Animated
 } from "react-native";
 import {
   Touchable,
@@ -45,7 +46,9 @@ class Dashboard extends React.PureComponent {
     //   onSearch: this.openLocationModal
     // });
     this.state = {
-      isLoading: false
+      isLoading: false,
+      cardBounceValue1: new Animated.Value(height(50)),
+      cardBounceValue2: new Animated.Value(height(100))
     };
   }
 
@@ -59,6 +62,22 @@ class Dashboard extends React.PureComponent {
   componentDidMount() {
     AppContext.initializeEventActivityListeners(this, this.renderTrigger);
     SplashScreen.hide();
+    Animated.parallel([
+      Animated.spring(this.state.cardBounceValue1, {
+        toValue: 0,
+        velocity: 3,
+        tension: 2,
+        friction: 8,
+        useNativeDriver: true
+      }),
+      Animated.spring(this.state.cardBounceValue2, {
+        toValue: 0,
+        velocity: 3,
+        tension: 2,
+        friction: 8,
+        useNativeDriver: true
+      })
+    ]).start();
   }
 
   loader = () => {
@@ -73,8 +92,16 @@ class Dashboard extends React.PureComponent {
     return (
       <Container>
         <Content padder>
-          <ConversionCardComponent />
-          <RateHistoryComponent />
+          <Animated.View
+            style={{ transform: [{ translateY: this.state.cardBounceValue1 }] }}
+          >
+            <ConversionCardComponent />
+          </Animated.View>
+          <Animated.View
+            style={{ transform: [{ translateY: this.state.cardBounceValue2 }] }}
+          >
+            <RateHistoryComponent />
+          </Animated.View>
           <HowToCardComponent />
           {this.loader()}
         </Content>

@@ -4,10 +4,14 @@ class ConversionServiceManager {
     return new Promise((resolve, reject) => {
       ConversionService.getRates().then(
         res => {
-          if (res.status) {
+          if (res.status == 200) {
             resolve(res.data);
           } else {
-            reject(res);
+            if (res.data) {
+              reject(res.data.message);
+            } else {
+              reject(res.problem);
+            }
           }
         },
         err => {
