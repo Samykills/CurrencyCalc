@@ -34,7 +34,8 @@ import {
   Container
 } from "native-base";
 import ConversionCardComponent from "../../components/conversionCard/conversionCardComponent";
-
+import RateHistoryComponent from "../../components/rateHistory/rateHistoryComponent";
+import HowToCardComponent from "../../components/howToCard/howToCardComponent";
 class Dashboard extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -73,7 +74,8 @@ class Dashboard extends React.PureComponent {
       <Container>
         <Content padder>
           <ConversionCardComponent />
-          <Text>hahahah</Text>
+          <RateHistoryComponent />
+          <HowToCardComponent />
           {this.loader()}
         </Content>
       </Container>
