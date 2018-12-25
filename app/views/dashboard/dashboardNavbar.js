@@ -43,37 +43,18 @@ export default class DashboardNavBar extends React.PureComponent {
           />
         </TouchableOpacity>
 
-        <View
-          style={[
-            {
-              flex: 1,
-              marginLeft: width(9.64)
-            }
-          ]}
+        <Text
+          style={{
+            marginLeft: width(1.38),
+            color: iconColor,
+            fontSize: totalSize(2.03),
+            textAlign: "left",
+            // maxWidth: width(30),
+            fontFamily: DefaultAppTheme.primaryFontFamily
+          }}
         >
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "flex-start"
-            }}
-          >
-            <Text
-              style={{
-                marginLeft: width(1.38),
-                color: iconColor,
-                fontSize: totalSize(2.03),
-                textAlign: "left",
-                maxWidth: width(30),
-                fontFamily: DefaultAppTheme.primaryFontFamily
-              }}
-              numberOfLines={1}
-              ellipsizeMode={"tail"}
-            >
-              {Config.ENTERPRISE_NAME}
-            </Text>
-          </View>
-        </View>
+          {Config.APP_NAME}
+        </Text>
       </View>
     );
   }
@@ -81,7 +62,7 @@ export default class DashboardNavBar extends React.PureComponent {
   _renderMiddle() {
     return (
       <View style={styles.logoViewStyle}>
-        <Text style={styles.textTitleStyle}>{Config.ENTERPRISE_NAME}</Text>
+        <Text style={styles.textTitleStyle}>{Config.APP_NAME}</Text>
       </View>
     );
   }

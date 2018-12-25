@@ -29,8 +29,11 @@ import {
   Card,
   CardItem,
   Button,
-  Icon
+  Icon,
+  Content,
+  Container
 } from "native-base";
+import ConversionCardComponent from "../../components/conversionCard/conversionCardComponent";
 
 class Dashboard extends React.PureComponent {
   constructor(props) {
@@ -53,7 +56,6 @@ class Dashboard extends React.PureComponent {
   renderTrigger(currentContext, appContext) {}
 
   componentDidMount() {
-      debugger;
     AppContext.initializeEventActivityListeners(this, this.renderTrigger);
     SplashScreen.hide();
   }
@@ -68,10 +70,13 @@ class Dashboard extends React.PureComponent {
 
   render() {
     return (
-      <View>
-        <Text>hahahDashboard</Text>
-        {this.loader()}
-      </View>
+      <Container>
+        <Content padder>
+          <ConversionCardComponent />
+          <Text>hahahah</Text>
+          {this.loader()}
+        </Content>
+      </Container>
     );
   }
 }
