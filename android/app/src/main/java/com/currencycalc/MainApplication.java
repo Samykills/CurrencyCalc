@@ -3,6 +3,8 @@ package com.currencycalc;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
+import com.BV.LinearGradient.LinearGradientPackage;
 import com.masteratul.exceptionhandler.ReactNativeExceptionHandlerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
@@ -26,6 +28,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new SplashScreenReactPackage(),
+            new LinearGradientPackage(),
             new ReactNativeExceptionHandlerPackage(),
             new VectorIconsPackage(),
             new ReactNativeConfigPackage()

@@ -20,8 +20,10 @@
     "react-native-router-flux": "4.0.6",
     "react-native-vector-icons": "6.1.0",
     "react-native-exception-handler": "2.10.2",
+    "react-native-linear-gradient": "2.5.3",
+    "react-native-splash-screen": "3.1.1",
     "uRnFramework-app-core": "git+https://ullas_gupta@bitbucket.org/ugaj/urnframework-app-core.git",
-    "uRnFramework-basic-components": "git+https://ullas_gupta@bitbucket.org/ugaj/uRnFramework-basic-components.git"
+    "uRnFramework-basic-components": "git+https://ullas_gupta@bitbucket.org/ugaj/uRnFramework-basic-components.git#currencyCalc"
   },
   "devDependencies": {
     "babel-jest": "23.6.0",
