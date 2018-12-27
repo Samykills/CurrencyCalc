@@ -6,7 +6,9 @@ class RateHistoryServiceManager {
     return new Promise((resolve, reject) => {
       RateHistoryService.getRateHistory(from, to).then(
         res => {
+          debugger;
           if (res.status == 200) {
+           
             let resultDataJson = res.data[queryData];
             let graphData = [];
             for (let key in resultDataJson) {

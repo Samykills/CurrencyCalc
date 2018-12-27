@@ -8,7 +8,8 @@ import JsErrorHandler from "./app/exceptionHandler/jsExceptionHandler";
 import NativeErrorHandler from "./app/exceptionHandler/nativeExceptionHandler";
 import { DefaultAppTheme } from "uRnFramework-basic-components";
 import { Root } from "native-base";
-import  AppRouter from "./app/app-router";
+import AppRouter from "./app/app-router";
+import { AppContext, AppContextModel } from "uRnFramework-app-core";
 const STATUSBAR_HEIGHT = Platform.OS === "ios" ? 20 : StatusBar.currentHeight;
 
 const styles = StyleSheet.create({
@@ -29,6 +30,11 @@ const SSCStatusBar = ({ backgroundColor, ...props }) => (
 setJSExceptionHandler(JsErrorHandler, false);
 
 setNativeExceptionHandler(NativeErrorHandler, true);
+
+(setStore => {
+  AppContext.setAppContext(AppContextModel);
+})();
+
 export default class App extends Component<Props> {
   render() {
     return (

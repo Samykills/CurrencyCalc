@@ -47,8 +47,9 @@ class Dashboard extends React.PureComponent {
     // });
     this.state = {
       isLoading: false,
-      cardBounceValue1: new Animated.Value(height(50)),
-      cardBounceValue2: new Animated.Value(height(100))
+      cardBounceValue1: new Animated.Value(height(60)),
+      cardBounceValue2: new Animated.Value(height(120)),
+      cardBounceValue3: new Animated.Value(height(180))
     };
   }
 
@@ -65,16 +66,23 @@ class Dashboard extends React.PureComponent {
     Animated.parallel([
       Animated.spring(this.state.cardBounceValue1, {
         toValue: 0,
-        velocity: 3,
-        tension: 2,
-        friction: 8,
+        velocity: 1,
+        tension: 4,
+        friction: 12,
         useNativeDriver: true
       }),
       Animated.spring(this.state.cardBounceValue2, {
         toValue: 0,
+        velocity: 2,
+        tension: 4,
+        friction: 12,
+        useNativeDriver: true
+      }),
+      Animated.spring(this.state.cardBounceValue3, {
+        toValue: 0,
         velocity: 3,
-        tension: 2,
-        friction: 8,
+        tension: 4,
+        friction: 12,
         useNativeDriver: true
       })
     ]).start();
@@ -102,7 +110,11 @@ class Dashboard extends React.PureComponent {
           >
             <RateHistoryComponent />
           </Animated.View>
-          <HowToCardComponent />
+          <Animated.View
+            style={{ transform: [{ translateY: this.state.cardBounceValue3 }] }}
+          >
+            <HowToCardComponent />
+          </Animated.View>
           {this.loader()}
         </Content>
       </Container>

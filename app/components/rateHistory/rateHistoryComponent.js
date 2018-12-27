@@ -1,73 +1,213 @@
 import React from "react";
-import { Card, CardItem, Item, Right, Left, Body } from "native-base";
+import {
+  Card,
+  CardItem,
+  Item,
+  Right,
+  Left,
+  Body,
+  Spinner,
+  Toast
+} from "native-base";
 import { View, Text, Animated } from "react-native";
 import { height, width, totalSize } from "react-native-dimension";
 import PureChart from "react-native-pure-chart";
-import { DefaultAppTheme } from "uRnFramework-basic-components";
+import { DefaultAppTheme, Touchable } from "uRnFramework-basic-components";
 import RateHistoryServiceManager from "./serviceManager/rateHistoryServiceManager";
-const sampleData = [
-  { x: "2018-01-01", y: 30 },
-  { x: "2018-01-02", y: 200 },
-  { x: "2018-01-03", y: 170 },
-  { x: "2018-01-04", y: 250 },
-  { x: "2018-01-05", y: 10 }
-];
+import { AppContext } from "uRnFramework-app-core";
+
 class RateHistoryComponent extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      graphData: sampleData,
+      graphData: [],
+      isLoaded: false,
+      loadFailed: false,
+      fromCurrency: "",
+      toCurrency: "",
+      graphName: "",
+      cardContentBounceValue1: new Animated.Value(-height(10)),
+      cardContentBounceValue2: new Animated.Value(-height(30))
     };
   }
 
-  componentDidMount() {
-    RateHistoryServiceManager.getRateHistory("USD", "INR").then(
+  storeTrigger(currentContext, appContext) {
+    if (
+      appContext.fromCurrency !== currentContext.state.fromCurrency ||
+      appContext.toCurrency !== currentContext.state.toCurrency
+    ) {
+      currentContext.loadHistoryGraph(
+        currentContext,
+        appContext.fromCurrency,
+        appContext.toCurrency
+      );
+    }
+  }
+
+  loadHistoryGraph(context, fromCurrency, toCurrency) {
+    context.setState({ isLoaded: false });
+    RateHistoryServiceManager.getRateHistory(fromCurrency, toCurrency).then(
       res => {
-        this.setState({ graphData: res });
+        let gName = toCurrency + " vs " + fromCurrency;
+        context.setState({ graphData: res, isLoaded: true, graphName: gName });
+        Animated.sequence([
+          Animated.spring(context.state.cardContentBounceValue1, {
+            toValue: 0,
+            velocity: 3,
+            tension: 2,
+            friction: 8,
+            useNativeDriver: true
+          }),
+          Animated.spring(context.state.cardContentBounceValue2, {
+            toValue: 0,
+            velocity: 3,
+            tension: 2,
+            friction: 8,
+            useNativeDriver: true
+          })
+        ]).start();
       },
       err => {
-        debugger;
+        context.setState({ isLoaded: false, loadFailed: true });
       }
     );
+  }
+
+  componentDidMount() {
+    AppContext.initializeEventActivityListeners(this, this.storeTrigger);
+    this.loadHistoryGraph(this, this.state.fromCurrency, this.state.toCurrency);
+  }
+
+  _renderGraphData() {
+    return (
+      <View>
+        <Animated.View
+          style={{
+            transform: [{ translateY: this.state.cardContentBounceValue1 }]
+          }}
+        >
+          <CardItem header>
+            <Left>
+              <View
+                style={{
+                  borderRadius: 20,
+                  borderWidth: 1,
+
+                  borderColor: DefaultAppTheme.secondary + "50"
+                }}
+              >
+                <Touchable
+                  onPress={() => {
+                    Toast.show({
+                      text: "Only last 8 days data available via Api :("
+                    });
+                  }}
+                  content={
+                    <Text
+                      style={{
+                        fontSize: totalSize(1.56),
+                        fontWeight: "500",
+                        padding: 8,
+                        color: DefaultAppTheme.primary + "BC",
+                        fontFamily: DefaultAppTheme.primaryFontFamily
+                      }}
+                    >
+                      8 Days
+                    </Text>
+                  }
+                />
+              </View>
+            </Left>
+            <Right>
+              <View
+                style={{
+                  borderRadius: 20,
+                  borderWidth: 1,
+                  padding: 8,
+                  borderColor: DefaultAppTheme.secondary + "50"
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: totalSize(1.56),
+                    fontWeight: "500",
+                    color: DefaultAppTheme.primary + "BC",
+                    fontFamily: DefaultAppTheme.primaryFontFamily
+                  }}
+                >
+                  {this.state.graphName}
+                </Text>
+              </View>
+            </Right>
+          </CardItem>
+        </Animated.View>
+
+        <CardItem style={{ width: width(80) }}>
+          <Animated.View
+            style={{
+              transform: [{ translateY: this.state.cardContentBounceValue1 }]
+            }}
+          >
+            <PureChart
+              numberOfYAxisGuideLine={5}
+              data={this.state.graphData}
+              color={DefaultAppTheme.primary}
+              type="line"
+            />
+          </Animated.View>
+        </CardItem>
+      </View>
+    );
+  }
+
+  _renderIsLoading() {
+    let renderContent = this.state.loadfailed ? (
+      <CardItem>
+        <Icon
+          ios="ios-warning"
+          android="md-warning"
+          style={{
+            color: "#f7b731"
+          }}
+        />
+        <Text
+          style={{
+            fontSize: totalSize(2.08),
+            fontWeight: "500",
+            fontFamily: DefaultAppTheme.primaryFontFamily,
+            color: "#f7b731",
+            marginLeft: width(2)
+          }}
+        >
+          Load failed
+        </Text>
+      </CardItem>
+    ) : (
+      <CardItem>
+        <Spinner color={DefaultAppTheme.primary} />
+        <Text
+          style={{
+            fontSize: totalSize(2.08),
+            fontWeight: "500",
+            fontFamily: DefaultAppTheme.primaryFontFamily,
+            color: DefaultAppTheme.primary,
+            marginLeft: width(2)
+          }}
+        >
+          Getting historical data
+        </Text>
+      </CardItem>
+    );
+
+    return renderContent;
   }
 
   render() {
     return (
       <Card>
-        <CardItem header>
-          <Left>
-            <Text
-              style={{
-                fontSize: totalSize(2.08),
-                fontWeight: "500",
-                color: DefaultAppTheme.primary + "BC",
-                fontFamily: DefaultAppTheme.primaryFontFamily
-              }}
-            >
-              Rate history
-            </Text>
-          </Left>
-          <Right>
-            <Text
-              style={{
-                fontSize: totalSize(2.08),
-                fontWeight: "500",
-                color: DefaultAppTheme.primary + "BC",
-                fontFamily: DefaultAppTheme.primaryFontFamily
-              }}
-            >
-              Rate history
-            </Text>
-          </Right>
-        </CardItem>
-        <CardItem style={{ width: width(80) }}>
-          <PureChart
-            numberOfYAxisGuideLine={5}
-            data={this.state.graphData}
-            color={DefaultAppTheme.primary}
-            type="line"
-          />
-        </CardItem>
+        {this.state.isLoaded
+          ? this._renderGraphData()
+          : this._renderIsLoading()}
       </Card>
     );
   }
