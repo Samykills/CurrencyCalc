@@ -24,8 +24,8 @@
     "react-native-router-flux": "4.0.6",
     "react-native-splash-screen": "3.1.1",
     "react-native-vector-icons": "6.1.0",
-    "uRnFramework-app-core": "git+https://ullas_gupta@bitbucket.org/ugaj/urnframework-app-core.git",
-    "uRnFramework-basic-components": "git+https://ullas_gupta@bitbucket.org/ugaj/uRnFramework-basic-components.git#currencyCalc"
+    "uRnFramework-app-core": "git+https://github.com/Samykills/uRnFramework-app-core.git",
+    "uRnFramework-basic-components": "git+https://github.com/Samykills/uRnFramework-basic-components.git"
   },
   "devDependencies": {
     "babel-jest": "23.6.0",
