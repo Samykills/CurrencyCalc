@@ -1,14 +1,5 @@
 import React from "react";
-import {
-  Actions,
-  Router,
-  Scene,
-  Modal,
-  Drawer,
-  Stack,
-  Lightbox,
-  Tabs
-} from "react-native-router-flux";
+import { Router, Scene, Stack } from "react-native-router-flux";
 import {
   DefaultAppTheme,
   WebViewComponent
@@ -21,30 +12,26 @@ import HistoryView from "./views/history/historyView";
 const AppRouter = () => {
   return (
     <Router>
-      <Lightbox>
-        <Modal hideNavBar>
-          <Stack key="root">
-            <Scene
-              key="dashboard"
-              component={Dashboard}
-              navBar={DashboardNavbar}
-              title="DashBoard"
-              initial
-            />
-            <Scene
-              back
-              key="historyView"
-              component={HistoryView}
-              title="Recent History"
-              navigationBarStyle={{
-                backgroundColor: DefaultAppTheme.primary
-                // marginTop: Platform.OS === "ios" ? -20 : 0
-              }}
-              navBarButtonColor={DefaultAppTheme.navBarButtonsColor}
-            />
-          </Stack>
-        </Modal>
-      </Lightbox>
+      <Stack key="root">
+        <Scene
+          key="dashboard"
+          component={Dashboard}
+          navBar={DashboardNavbar}
+          initial
+        />
+
+        <Scene
+          back
+          component={HistoryView}
+          key="historyView"
+          title="Recent History"
+          navigationBarStyle={{
+            backgroundColor: DefaultAppTheme.primary
+            // marginTop: Platform.OS === "ios" ? -20 : 0
+          }}
+          navBarButtonColor={DefaultAppTheme.navBarButtonsColor}
+        />
+      </Stack>
     </Router>
   );
 };
