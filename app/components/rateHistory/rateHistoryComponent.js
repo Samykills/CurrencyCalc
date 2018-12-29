@@ -15,7 +15,8 @@ import PureChart from "react-native-pure-chart";
 import { DefaultAppTheme, Touchable } from "uRnFramework-basic-components";
 import RateHistoryServiceManager from "./serviceManager/rateHistoryServiceManager";
 import { AppContext } from "uRnFramework-app-core";
-
+import LoadFailComponent from "../loader/loadFail/loadFailComponent";
+import IsLoadingComponent from "../loader/isLoading/isLoadingComponent";
 class RateHistoryComponent extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -26,8 +27,7 @@ class RateHistoryComponent extends React.PureComponent {
       fromCurrency: "",
       toCurrency: "",
       graphName: "",
-      cardContentBounceValue1: new Animated.Value(-height(10)),
-      cardContentBounceValue2: new Animated.Value(-height(30))
+      cardContentBounceValue1: new Animated.Value(-height(10))
     };
   }
 
@@ -50,22 +50,13 @@ class RateHistoryComponent extends React.PureComponent {
       res => {
         let gName = toCurrency + " vs " + fromCurrency;
         context.setState({ graphData: res, isLoaded: true, graphName: gName });
-        Animated.sequence([
-          Animated.spring(context.state.cardContentBounceValue1, {
-            toValue: 0,
-            velocity: 3,
-            tension: 2,
-            friction: 8,
-            useNativeDriver: true
-          }),
-          Animated.spring(context.state.cardContentBounceValue2, {
-            toValue: 0,
-            velocity: 3,
-            tension: 2,
-            friction: 8,
-            useNativeDriver: true
-          })
-        ]).start();
+        Animated.spring(context.state.cardContentBounceValue1, {
+          toValue: 0,
+          velocity: 3,
+          tension: 2,
+          friction: 8,
+          useNativeDriver: true
+        }).start();
       },
       err => {
         context.setState({ isLoaded: false, loadFailed: true });
@@ -75,7 +66,7 @@ class RateHistoryComponent extends React.PureComponent {
 
   componentDidMount() {
     AppContext.initializeEventActivityListeners(this, this.storeTrigger);
-    this.loadHistoryGraph(this, this.state.fromCurrency, this.state.toCurrency);
+    // this.loadHistoryGraph(this, this.state.fromCurrency, this.state.toCurrency);
   }
 
   _renderGraphData() {
@@ -140,63 +131,25 @@ class RateHistoryComponent extends React.PureComponent {
               </View>
             </Right>
           </CardItem>
-        </Animated.View>
 
-        <CardItem style={{ width: width(80) }}>
-          <Animated.View
-            style={{
-              transform: [{ translateY: this.state.cardContentBounceValue1 }]
-            }}
-          >
+          <CardItem style={{ width: width(80) }}>
             <PureChart
               numberOfYAxisGuideLine={5}
               data={this.state.graphData}
               color={DefaultAppTheme.primary}
               type="line"
             />
-          </Animated.View>
-        </CardItem>
+          </CardItem>
+        </Animated.View>
       </View>
     );
   }
 
   _renderIsLoading() {
     let renderContent = this.state.loadfailed ? (
-      <CardItem>
-        <Icon
-          ios="ios-warning"
-          android="md-warning"
-          style={{
-            color: "#f7b731"
-          }}
-        />
-        <Text
-          style={{
-            fontSize: totalSize(2.08),
-            fontWeight: "500",
-            fontFamily: DefaultAppTheme.primaryFontFamily,
-            color: "#f7b731",
-            marginLeft: width(2)
-          }}
-        >
-          Load failed
-        </Text>
-      </CardItem>
+      <LoadFailComponent message={"Load failure"} />
     ) : (
-      <CardItem>
-        <Spinner color={DefaultAppTheme.primary} />
-        <Text
-          style={{
-            fontSize: totalSize(2.08),
-            fontWeight: "500",
-            fontFamily: DefaultAppTheme.primaryFontFamily,
-            color: DefaultAppTheme.primary,
-            marginLeft: width(2)
-          }}
-        >
-          Getting historical data
-        </Text>
-      </CardItem>
+      <IsLoadingComponent message={"Loading Historical data"} />
     );
 
     return renderContent;

@@ -18,6 +18,9 @@ import { DefaultAppTheme } from "uRnFramework-basic-components";
 import { width, totalSize, height } from "react-native-dimension";
 import fx from "money";
 import { AppContext } from "uRnFramework-app-core";
+import LoadFailComponent from "../loader/loadFail/loadFailComponent";
+import IsLoadingComponent from "../loader/isLoading/isLoadingComponent";
+import Util from "../../util/util";
 class ConversionCardComponent extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -37,10 +40,7 @@ class ConversionCardComponent extends React.PureComponent {
   }
 
   onToCurrencyChange(value: string) {
-    this.setState({
-      toCurrency: value
-    });
-    let tmp = fx(this.state.fromCurrencyValue)
+    let tmp = fx(this.state.toCurrencyValue)
       .from(value)
       .to(this.state.fromCurrency)
       .toFixed(2);
@@ -105,6 +105,10 @@ class ConversionCardComponent extends React.PureComponent {
     newAppContext.fromCurrency = currencySelectionDataArray[0];
     newAppContext.toCurrency = currencySelectionDataArray[0];
     AppContext.setAppContext(newAppContext);
+    this._animateComponents();
+  }
+
+  _animateComponents = () => {
     Animated.parallel([
       Animated.spring(this.state.cardContentBounceValue1, {
         toValue: 0,
@@ -121,7 +125,7 @@ class ConversionCardComponent extends React.PureComponent {
         useNativeDriver: true
       })
     ]).start();
-  }
+  };
 
   fromCurrencyValueChange(text) {
     if (text) {
@@ -130,6 +134,13 @@ class ConversionCardComponent extends React.PureComponent {
         .to(this.state.toCurrency)
         .toFixed(2);
 
+      Util.prepareHistory(
+        this.state.fromCurrency,
+        this.state.toCurrency,
+        text,
+        tmp
+      );
+      
       this.setState({
         fromCurrencyValue: text,
         toCurrencyValue: tmp
@@ -151,6 +162,13 @@ class ConversionCardComponent extends React.PureComponent {
         .from(this.state.toCurrency)
         .to(this.state.fromCurrency)
         .toFixed(2);
+
+      Util.prepareHistory(
+        this.state.toCurrency,
+        this.state.fromCurrency,
+        text,
+        tmp
+      );
 
       this.setState({
         fromCurrencyValue: tmp,
@@ -246,41 +264,9 @@ class ConversionCardComponent extends React.PureComponent {
 
   _renderIsLoading() {
     let renderContent = this.state.loadfailed ? (
-      <CardItem>
-        <Icon
-          ios="ios-warning"
-          android="md-warning"
-          style={{
-            color: "#f7b731"
-          }}
-        />
-        <Text
-          style={{
-            fontSize: totalSize(2.08),
-            fontWeight: "500",
-            fontFamily: DefaultAppTheme.primaryFontFamily,
-            color: "#f7b731",
-            marginLeft: width(2)
-          }}
-        >
-          Load failed
-        </Text>
-      </CardItem>
+      <LoadFailComponent message={"Load failure"} />
     ) : (
-      <CardItem>
-        <Spinner color={DefaultAppTheme.primary} />
-        <Text
-          style={{
-            fontSize: totalSize(2.08),
-            fontWeight: "500",
-            fontFamily: DefaultAppTheme.primaryFontFamily,
-            color: DefaultAppTheme.primary,
-            marginLeft: width(2)
-          }}
-        >
-          Getting exchange rates
-        </Text>
-      </CardItem>
+      <IsLoadingComponent message={"Loading exchange rates"} />
     );
 
     return renderContent;

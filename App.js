@@ -10,6 +10,7 @@ import { DefaultAppTheme } from "uRnFramework-basic-components";
 import { Root } from "native-base";
 import AppRouter from "./app/app-router";
 import { AppContext, AppContextModel } from "uRnFramework-app-core";
+import Util from "./app/util/util";
 const STATUSBAR_HEIGHT = Platform.OS === "ios" ? 20 : StatusBar.currentHeight;
 
 const styles = StyleSheet.create({
@@ -33,6 +34,7 @@ setNativeExceptionHandler(NativeErrorHandler, true);
 
 (setStore => {
   AppContext.setAppContext(AppContextModel);
+  Util.initalizeHistory();
 })();
 
 export default class App extends Component<Props> {

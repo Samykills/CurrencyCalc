@@ -30,18 +30,15 @@ export default class DashboardNavBar extends React.PureComponent {
           alignItems: "center"
         }}
       >
-        <TouchableOpacity
-          onPress={Actions.drawerOpen}
-          style={[styles.navBarCustomStyle]}
-        >
+        <View style={[styles.navBarCustomStyle]}>
           <Icon
-            ios="ios-menu"
-            android="md-menu"
+            type="MaterialCommunityIcons"
+            name="scale-balance"
             style={{
               color: iconColor
             }}
           />
-        </TouchableOpacity>
+        </View>
 
         <Text
           style={{
@@ -81,21 +78,10 @@ export default class DashboardNavBar extends React.PureComponent {
             }
           ]}
         >
-          <TouchableOpacity onPress={this.props.onSearch}>
+          <TouchableOpacity onPress={this.props.onHistory}>
             <Icon
-              ios="ios-pin"
-              android="md-pin"
-              style={{
-                marginRight: width(3),
-                color: iconColor
-              }}
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={this.props.onNotify}>
-            <Icon
-              ios="ios-bookmarks"
-              android="md-bookmarks"
+              type="MaterialCommunityIcons"
+              name="history"
               style={{
                 marginRight: width(3),
                 color: iconColor
@@ -137,13 +123,9 @@ const styles = StyleSheet.create({
 
   navBarCustomStyle: {
     justifyContent: "center",
-    paddingLeft: width(5.08)
+    paddingLeft: width(3.08)
   },
-  logoImageViewStyle: {
-    width: width(11.16),
-    height: Platform.OS === "ios" ? height(6.85) : height(6.85),
-    marginLeft: width(2.77)
-  },
+
   logoViewStyle: {
     flex: 3,
     justifyContent: "center",

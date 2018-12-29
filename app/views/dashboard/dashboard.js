@@ -41,10 +41,9 @@ class Dashboard extends React.PureComponent {
   constructor(props) {
     super(props);
     let context = AppContext.getAppContext();
-    // this.props.navigation.setParams({
-    //   onNotify: this.handleNotification,
-    //   onSearch: this.openLocationModal
-    // });
+    this.props.navigation.setParams({
+      onHistory: this.openRecentHistory
+    });
     this.state = {
       isLoading: false,
       cardBounceValue1: new Animated.Value(height(60)),
@@ -53,6 +52,9 @@ class Dashboard extends React.PureComponent {
     };
   }
 
+  openRecentHistory = () => {
+    Actions.push("historyView");
+  };
   /**
    * Important as its the callback from store
    * @param {*} currentContext
