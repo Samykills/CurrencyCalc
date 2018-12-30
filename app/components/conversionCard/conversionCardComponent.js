@@ -40,34 +40,48 @@ class ConversionCardComponent extends React.PureComponent {
   }
 
   onToCurrencyChange(value: string) {
-    let tmp = fx(this.state.toCurrencyValue)
-      .from(value)
-      .to(this.state.fromCurrency)
-      .toFixed(2);
+    if (this.state.toCurrencyValue) {
+      let tmp = fx(this.state.toCurrencyValue)
+        .from(value)
+        .to(this.state.fromCurrency)
+        .toFixed(2);
 
-    this.setState({
-      toCurrency: value,
-      fromCurrencyValue: tmp
-    });
-    let newAppContext = AppContext.getAppContext();
-    newAppContext.toCurrency = value;
-    AppContext.setAppContext(newAppContext);
+      this.setState({
+        toCurrency: value,
+        fromCurrencyValue: tmp
+      });
+      let newAppContext = AppContext.getAppContext();
+      newAppContext.toCurrency = value;
+      AppContext.setAppContext(newAppContext);
+    } else {
+      Toast.show({
+        text: "Need a value to convert!",
+        duration: 1500
+      });
+    }
   }
 
   onFromCurrencyChange(value: string) {
-    let tmp = fx(this.state.fromCurrencyValue)
-      .from(value)
-      .to(this.state.toCurrency)
-      .toFixed(2);
+    if (this.state.fromCurrencyValue) {
+      let tmp = fx(this.state.fromCurrencyValue)
+        .from(value)
+        .to(this.state.toCurrency)
+        .toFixed(2);
 
-    this.setState({
-      fromCurrency: value,
-      toCurrencyValue: tmp
-    });
+      this.setState({
+        fromCurrency: value,
+        toCurrencyValue: tmp
+      });
 
-    let newAppContext = AppContext.getAppContext();
-    newAppContext.fromCurrency = value;
-    AppContext.setAppContext(newAppContext);
+      let newAppContext = AppContext.getAppContext();
+      newAppContext.fromCurrency = value;
+      AppContext.setAppContext(newAppContext);
+    } else {
+      Toast.show({
+        text: "Need a value to convert!",
+        duration: 1500
+      });
+    }
   }
 
   componentDidMount() {
@@ -143,6 +157,7 @@ class ConversionCardComponent extends React.PureComponent {
         text: "Need a value here!",
         duration: 1500
       });
+
       this.setState({
         fromCurrencyValue: text
       });
@@ -165,6 +180,7 @@ class ConversionCardComponent extends React.PureComponent {
         text: "Need a value here!",
         duration: 1500
       });
+
       this.setState({
         toCurrencyValue: text
       });

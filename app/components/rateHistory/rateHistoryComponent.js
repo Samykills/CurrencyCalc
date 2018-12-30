@@ -49,7 +49,13 @@ class RateHistoryComponent extends React.PureComponent {
     RateHistoryServiceManager.getRateHistory(fromCurrency, toCurrency).then(
       res => {
         let gName = toCurrency + " vs " + fromCurrency;
-        context.setState({ graphData: res, isLoaded: true, graphName: gName });
+        context.setState({
+          graphData: res,
+          isLoaded: true,
+          graphName: gName,
+          fromCurrency: fromCurrency,
+          toCurrency: toCurrency
+        });
         Animated.spring(context.state.cardContentBounceValue1, {
           toValue: 0,
           velocity: 3,

@@ -7,7 +7,9 @@ class Util {
     if (fromCurrency !== toCurrency) {
       let conversionName = fromCurrency + "_" + toCurrency;
       let details = Util.historyDetails(toConvert, convertedValue);
-      Util.recordHistory(conversionName, details);
+      if (details) {
+        Util.recordHistory(conversionName, details);
+      }
     } else {
       Toast.show({
         text: "No point in saving same currency values!",
@@ -48,11 +50,14 @@ class Util {
   }
 
   static historyDetails(toConvert, convertedTo) {
-    let details = {
-      toConvert: toConvert,
-      convertedValue: convertedTo
-    };
-    return details;
+    if (toConvert && convertedTo) {
+      let details = {
+        toConvert: toConvert,
+        convertedValue: convertedTo
+      };
+      return details;
+    }
+    Toast.show({ text: "Invalid Values", type: "danger" });
   }
 }
 
