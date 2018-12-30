@@ -6,11 +6,12 @@ import { totalSize, width } from "react-native-dimension";
 class HowToCardComponent extends React.PureComponent {
   constructor(props) {
     super(props);
-    this.title = ["Click here for Info"];
+    this.title = ["Click here for more Info..."];
   }
   _renderHeader(title, expanded) {
     return (
       <Card
+        transparent
         style={{
           flexDirection: "row",
           padding: 10,

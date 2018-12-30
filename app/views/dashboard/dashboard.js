@@ -103,6 +103,11 @@ class Dashboard extends React.PureComponent {
       <Container>
         <Content padder>
           <Animated.View
+            style={{ transform: [{ translateY: this.state.cardBounceValue3 }] }}
+          >
+            <HowToCardComponent />
+          </Animated.View>
+          <Animated.View
             style={{ transform: [{ translateY: this.state.cardBounceValue1 }] }}
           >
             <ConversionCardComponent />
@@ -111,11 +116,6 @@ class Dashboard extends React.PureComponent {
             style={{ transform: [{ translateY: this.state.cardBounceValue2 }] }}
           >
             <RateHistoryComponent />
-          </Animated.View>
-          <Animated.View
-            style={{ transform: [{ translateY: this.state.cardBounceValue3 }] }}
-          >
-            <HowToCardComponent />
           </Animated.View>
           {this.loader()}
         </Content>
