@@ -335,7 +335,7 @@ class ConversionCardComponent extends React.PureComponent {
   };
   _renderIsLoading() {
     let renderContent = this.state.loadfailed ? (
-      <LoadFailComponent message={"Load failure"} />
+      <LoadFailComponent message={"Unable to load!"} />
     ) : (
       <IsLoadingComponent message={"Loading exchange rates"} />
     );

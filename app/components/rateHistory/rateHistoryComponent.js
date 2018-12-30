@@ -154,7 +154,7 @@ class RateHistoryComponent extends React.PureComponent {
 
   _renderIsLoading() {
     let renderContent = this.state.loadFailed ? (
-      <LoadFailComponent message={"Load failure"} />
+      <LoadFailComponent message={"Unable to load!"} />
     ) : (
       <IsLoadingComponent message={"Loading Historical data"} />
     );
