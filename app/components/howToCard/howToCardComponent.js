@@ -9,6 +9,9 @@ class HowToCardComponent extends React.PureComponent {
     this.title = ["Click here for more Info..."];
   }
   _renderHeader(title, expanded) {
+    let headerColor = expanded
+      ? DefaultAppTheme.primary
+      : DefaultAppTheme.blackColor + "BC";
     return (
       <Card
         transparent
@@ -21,13 +24,13 @@ class HowToCardComponent extends React.PureComponent {
       >
         <CardItem>
           <Left>
-            <Icon name="md-alert" style={{ color: DefaultAppTheme.primary }} />
+            <Icon name="md-alert" style={{ color: headerColor }} />
             <Text
               style={{
                 marginLeft: width(5),
                 fontWeight: "500",
                 fontFamily: DefaultAppTheme.primaryFontFamily,
-                color: DefaultAppTheme.primary
+                color: headerColor
               }}
             >
               {title}
@@ -76,8 +79,19 @@ class HowToCardComponent extends React.PureComponent {
           <CardItem>
             <Body>
               <Text style={styles.cardTextStyle}>
-                The app Saves all the rate changes input given by the user for
-                future queries. And displays them on the recent history page.
+                The app can save all the exchanges inputs given by the user for
+                future queries. And displays them on the recent history(
+                {
+                  <Icon
+                    type="MaterialCommunityIcons"
+                    name="history"
+                    style={{
+                      color: DefaultAppTheme.blackColor + "BC",
+                      fontSize: totalSize(1.8)
+                    }}
+                  />
+                }
+                ) page.
               </Text>
             </Body>
           </CardItem>

@@ -45,7 +45,7 @@ class RateHistoryComponent extends React.PureComponent {
   }
 
   loadHistoryGraph(context, fromCurrency, toCurrency) {
-    context.setState({ isLoaded: false });
+    context.setState({ isLoaded: false, loadFailed: false });
     RateHistoryServiceManager.getRateHistory(fromCurrency, toCurrency).then(
       res => {
         let gName = toCurrency + " vs " + fromCurrency;
@@ -67,6 +67,7 @@ class RateHistoryComponent extends React.PureComponent {
   componentDidMount() {
     AppContext.initializeEventActivityListeners(this, this.storeTrigger);
     // this.loadHistoryGraph(this, this.state.fromCurrency, this.state.toCurrency);
+    this._stopLoad();
   }
 
   _renderGraphData() {
@@ -146,7 +147,7 @@ class RateHistoryComponent extends React.PureComponent {
   }
 
   _renderIsLoading() {
-    let renderContent = this.state.loadfailed ? (
+    let renderContent = this.state.loadFailed ? (
       <LoadFailComponent message={"Load failure"} />
     ) : (
       <IsLoadingComponent message={"Loading Historical data"} />
@@ -154,6 +155,17 @@ class RateHistoryComponent extends React.PureComponent {
 
     return renderContent;
   }
+
+  _stopLoad = () => {
+    setTimeout(() => {
+      debugger;
+      if (!this.state.toCurrency && !this.state.fromCurrency)
+        this.setState({
+          isLoaded:false,
+          loadFailed: true
+        });
+    }, 15000);
+  };
 
   render() {
     return (
