@@ -158,10 +158,9 @@ class RateHistoryComponent extends React.PureComponent {
 
   _stopLoad = () => {
     setTimeout(() => {
-      debugger;
       if (!this.state.toCurrency && !this.state.fromCurrency)
         this.setState({
-          isLoaded:false,
+          isLoaded: false,
           loadFailed: true
         });
     }, 15000);
