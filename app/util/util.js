@@ -8,6 +8,11 @@ class Util {
       let conversionName = fromCurrency + "_" + toCurrency;
       let details = Util.historyDetails(toConvert, convertedValue);
       Util.recordHistory(conversionName, details);
+    } else {
+      Toast.show({
+        text: "No point in saving same currency values!",
+        type: "warning"
+      });
     }
   }
 
@@ -17,7 +22,14 @@ class Util {
     let conversionList = history[conversionName] ? history[conversionName] : [];
     conversionList.push(conversionDetails);
     history[conversionName] = conversionList;
-    AsyncStorageUtil.set(historyDB, JSON.stringify(history));
+    AsyncStorageUtil.set(historyDB, JSON.stringify(history)).then(
+      res => {
+        Toast.show({ text: "Saved", type: "success" });
+      },
+      err => {
+        Toast.show({ text: "Save error!", type: "danger" });
+      }
+    );
   }
 
   static initalizeHistory() {

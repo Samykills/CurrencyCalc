@@ -14,7 +14,7 @@ import {
   Toast
 } from "native-base";
 import ConversionServiceManager from "./serviceManger/conversionServiceManager";
-import { DefaultAppTheme } from "uRnFramework-basic-components";
+import { DefaultAppTheme, Touchable } from "uRnFramework-basic-components";
 import { width, totalSize, height } from "react-native-dimension";
 import fx from "money";
 import { AppContext } from "uRnFramework-app-core";
@@ -134,13 +134,6 @@ class ConversionCardComponent extends React.PureComponent {
         .to(this.state.toCurrency)
         .toFixed(2);
 
-      Util.prepareHistory(
-        this.state.fromCurrency,
-        this.state.toCurrency,
-        text,
-        tmp
-      );
-      
       this.setState({
         fromCurrencyValue: text,
         toCurrencyValue: tmp
@@ -162,13 +155,6 @@ class ConversionCardComponent extends React.PureComponent {
         .from(this.state.toCurrency)
         .to(this.state.fromCurrency)
         .toFixed(2);
-
-      Util.prepareHistory(
-        this.state.toCurrency,
-        this.state.fromCurrency,
-        text,
-        tmp
-      );
 
       this.setState({
         fromCurrencyValue: tmp,
@@ -193,75 +179,144 @@ class ConversionCardComponent extends React.PureComponent {
             transform: [{ translateY: this.state.cardContentBounceValue1 }]
           }}
         >
-          <CardItem>
-            <Left>
-              <Item rounded>
-                <Input
-                  placeholder="value"
-                  keyboardType="numeric"
-                  value={`${this.state.fromCurrencyValue}`}
-                  onChangeText={text => {
-                    this.fromCurrencyValueChange(text);
-                  }}
-                />
-              </Item>
-            </Left>
-            <Right>
-              <Item>
-                <Picker
-                  mode="dropdown"
-                  iosIcon={<Icon name="ios-arrow-down" />}
-                  style={{ width: undefined }}
-                  selectedValue={this.state.fromCurrency}
-                  onValueChange={this.onFromCurrencyChange.bind(this)}
-                >
-                  {this.state.currencySelection.map(item => {
-                    return <Picker.Item label={item} value={item} key={item} />;
-                  })}
-                </Picker>
-              </Item>
-            </Right>
-          </CardItem>
+          {this._renderFromCurrency()}
         </Animated.View>
         <Animated.View
           style={{
             transform: [{ translateY: this.state.cardContentBounceValue2 }]
           }}
         >
-          <CardItem>
-            <Left>
-              <Item rounded>
-                <Input
-                  placeholder="value"
-                  keyboardType="numeric"
-                  value={`${this.state.toCurrencyValue}`}
-                  onChangeText={text => {
-                    this.toCurrencyValueChange(text);
-                  }}
-                />
-              </Item>
-            </Left>
-            <Right>
-              <Item>
-                <Picker
-                  mode="dropdown"
-                  iosIcon={<Icon name="ios-arrow-down" />}
-                  style={{ width: undefined }}
-                  selectedValue={this.state.toCurrency}
-                  onValueChange={this.onToCurrencyChange.bind(this)}
-                >
-                  {this.state.currencySelection.map(item => {
-                    return <Picker.Item label={item} value={item} key={item} />;
-                  })}
-                </Picker>
-              </Item>
-            </Right>
-          </CardItem>
+          {this._renderToCurrency()}
+          {this._renderSaveButton()}
         </Animated.View>
       </View>
     );
   }
 
+  _renderFromCurrency = () => {
+    return (
+      <CardItem>
+        <Left>
+          <Item rounded>
+            <Input
+              placeholder="value"
+              keyboardType="numeric"
+              value={`${this.state.fromCurrencyValue}`}
+              onChangeText={text => {
+                this.fromCurrencyValueChange(text);
+              }}
+            />
+          </Item>
+        </Left>
+        <Right>
+          <Item>
+            <Picker
+              mode="dropdown"
+              iosIcon={<Icon name="ios-arrow-down" />}
+              style={{ width: undefined }}
+              selectedValue={this.state.fromCurrency}
+              onValueChange={this.onFromCurrencyChange.bind(this)}
+            >
+              {this.state.currencySelection.map(item => {
+                return <Picker.Item label={item} value={item} key={item} />;
+              })}
+            </Picker>
+          </Item>
+        </Right>
+      </CardItem>
+    );
+  };
+
+  _renderToCurrency = () => {
+    return (
+      <CardItem>
+        <Left>
+          <Item rounded>
+            <Input
+              placeholder="value"
+              keyboardType="numeric"
+              value={`${this.state.toCurrencyValue}`}
+              onChangeText={text => {
+                this.toCurrencyValueChange(text);
+              }}
+            />
+          </Item>
+        </Left>
+        <Right>
+          <Item>
+            <Picker
+              mode="dropdown"
+              iosIcon={<Icon name="ios-arrow-down" />}
+              style={{ width: undefined }}
+              selectedValue={this.state.toCurrency}
+              onValueChange={this.onToCurrencyChange.bind(this)}
+            >
+              {this.state.currencySelection.map(item => {
+                return <Picker.Item label={item} value={item} key={item} />;
+              })}
+            </Picker>
+          </Item>
+        </Right>
+      </CardItem>
+    );
+  };
+
+  _renderSaveButton = () => {
+    return (
+      <CardItem>
+        <Body
+          style={{
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+        >
+          <Touchable
+            onPress={() => {
+              Util.prepareHistory(
+                this.state.fromCurrency,
+                this.state.toCurrency,
+                this.state.fromCurrencyValue,
+                this.state.toCurrencyValue
+              );
+            }}
+            content={
+              <View
+                style={{
+                  width: width(70),
+                  height: height(5),
+                  borderRadius: totalSize(10),
+                  backgroundColor: DefaultAppTheme.secondary,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "row"
+                }}
+              >
+                <Icon
+                  type="MaterialCommunityIcons"
+                  name="content-save"
+                  style={{
+                    color: DefaultAppTheme.whiteColor,
+                    fontSize: totalSize(3)
+                  }}
+                />
+                <Text
+                  style={{
+                    fontFamily: DefaultAppTheme.primaryFontFamily,
+                    color: DefaultAppTheme.whiteColor,
+                    fontSize: totalSize(2.08),
+                    fontWeight: "500",
+                    marginLeft: width(2.5)
+                  }}
+                >
+                  Save Conversion
+                </Text>
+              </View>
+            }
+          />
+        </Body>
+      </CardItem>
+    );
+  };
   _renderIsLoading() {
     let renderContent = this.state.loadfailed ? (
       <LoadFailComponent message={"Load failure"} />
