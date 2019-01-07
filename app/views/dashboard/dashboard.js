@@ -44,11 +44,11 @@ class Dashboard extends React.PureComponent {
     this.props.navigation.setParams({
       onHistory: this.openRecentHistory
     });
+    this.cardBounceValue1 = new Animated.Value(height(60));
+    this.cardBounceValue2 = new Animated.Value(height(120));
+    this.cardBounceValue3 = new Animated.Value(height(180));
     this.state = {
-      isLoading: false,
-      cardBounceValue1: new Animated.Value(height(60)),
-      cardBounceValue2: new Animated.Value(height(120)),
-      cardBounceValue3: new Animated.Value(height(180))
+      isLoading: false
     };
   }
 
@@ -66,21 +66,21 @@ class Dashboard extends React.PureComponent {
     AppContext.initializeEventActivityListeners(this, this.renderTrigger);
     SplashScreen.hide();
     Animated.parallel([
-      Animated.spring(this.state.cardBounceValue1, {
+      Animated.spring(this.cardBounceValue1, {
         toValue: 0,
         velocity: 1,
         tension: 4,
         friction: 12,
         useNativeDriver: true
       }),
-      Animated.spring(this.state.cardBounceValue2, {
+      Animated.spring(this.cardBounceValue2, {
         toValue: 0,
         velocity: 2,
         tension: 4,
         friction: 12,
         useNativeDriver: true
       }),
-      Animated.spring(this.state.cardBounceValue3, {
+      Animated.spring(this.cardBounceValue3, {
         toValue: 0,
         velocity: 3,
         tension: 4,
@@ -103,17 +103,17 @@ class Dashboard extends React.PureComponent {
       <Container>
         <Content padder>
           <Animated.View
-            style={{ transform: [{ translateY: this.state.cardBounceValue3 }] }}
+            style={{ transform: [{ translateY: this.cardBounceValue3 }] }}
           >
             <HowToCardComponent />
           </Animated.View>
           <Animated.View
-            style={{ transform: [{ translateY: this.state.cardBounceValue1 }] }}
+            style={{ transform: [{ translateY: this.cardBounceValue1 }] }}
           >
             <ConversionCardComponent />
           </Animated.View>
           <Animated.View
-            style={{ transform: [{ translateY: this.state.cardBounceValue2 }] }}
+            style={{ transform: [{ translateY: this.cardBounceValue2 }] }}
           >
             <RateHistoryComponent />
           </Animated.View>

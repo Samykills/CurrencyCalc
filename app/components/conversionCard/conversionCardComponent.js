@@ -24,6 +24,8 @@ import Util from "../../util/util";
 class ConversionCardComponent extends React.PureComponent {
   constructor(props) {
     super(props);
+    this.cardContentBounceValue1 = new Animated.Value(-width(20));
+    this.cardContentBounceValue2 = new Animated.Value(-width(50));
     this.state = {
       isLoaded: false,
       loadfailed: false,
@@ -33,9 +35,7 @@ class ConversionCardComponent extends React.PureComponent {
       fromCurrency: "",
       fromCurrencyValue: "1",
       toCurrency: "",
-      toCurrencyValue: "1",
-      cardContentBounceValue1: new Animated.Value(-width(20)),
-      cardContentBounceValue2: new Animated.Value(-width(50))
+      toCurrencyValue: "1"
     };
   }
 
@@ -124,14 +124,14 @@ class ConversionCardComponent extends React.PureComponent {
 
   _animateComponents = () => {
     Animated.parallel([
-      Animated.spring(this.state.cardContentBounceValue1, {
+      Animated.spring(this.cardContentBounceValue1, {
         toValue: 0,
         velocity: 3,
         tension: 2,
         friction: 8,
         useNativeDriver: true
       }),
-      Animated.spring(this.state.cardContentBounceValue2, {
+      Animated.spring(this.cardContentBounceValue2, {
         toValue: 0,
         velocity: 3,
         tension: 2,
@@ -192,14 +192,14 @@ class ConversionCardComponent extends React.PureComponent {
       <View>
         <Animated.View
           style={{
-            transform: [{ translateY: this.state.cardContentBounceValue1 }]
+            transform: [{ translateY: this.cardContentBounceValue1 }]
           }}
         >
           {this._renderFromCurrency()}
         </Animated.View>
         <Animated.View
           style={{
-            transform: [{ translateY: this.state.cardContentBounceValue2 }]
+            transform: [{ translateY: this.cardContentBounceValue2 }]
           }}
         >
           {this._renderToCurrency()}

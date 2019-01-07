@@ -20,14 +20,14 @@ import IsLoadingComponent from "../loader/isLoading/isLoadingComponent";
 class RateHistoryComponent extends React.PureComponent {
   constructor(props) {
     super(props);
+    this.cardContentBounceValue1 = new Animated.Value(-height(10));
     this.state = {
       graphData: [],
       isLoaded: false,
       loadFailed: false,
       fromCurrency: "",
       toCurrency: "",
-      graphName: "",
-      cardContentBounceValue1: new Animated.Value(-height(10))
+      graphName: ""
     };
   }
 
@@ -56,7 +56,7 @@ class RateHistoryComponent extends React.PureComponent {
           fromCurrency: fromCurrency,
           toCurrency: toCurrency
         });
-        Animated.spring(context.state.cardContentBounceValue1, {
+        Animated.spring(context.cardContentBounceValue1, {
           toValue: 0,
           velocity: 3,
           tension: 2,
@@ -81,7 +81,7 @@ class RateHistoryComponent extends React.PureComponent {
       <View>
         <Animated.View
           style={{
-            transform: [{ translateY: this.state.cardContentBounceValue1 }]
+            transform: [{ translateY: this.cardContentBounceValue1 }]
           }}
         >
           <CardItem header>
