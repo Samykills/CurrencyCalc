@@ -63,13 +63,6 @@ class HowToCardComponent extends React.PureComponent {
           <CardItem>
             <Body>
               <Text style={styles.cardTextStyle}>
-                This App was curated for the TaxFix challenge.
-              </Text>
-            </Body>
-          </CardItem>
-          <CardItem>
-            <Body>
-              <Text style={styles.cardTextStyle}>
                 This is a currency Converter which uses Money.js for currency
                 conversion and shows the history of last 8 days rate change as
                 the api used here is from "currencyconverterapi" free tier.
